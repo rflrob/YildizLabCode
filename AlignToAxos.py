@@ -10,27 +10,27 @@ Keys are pairs, and when a __getitem__ is called, if the key is not one of the
 pairs already in the dictionary, it will return a value if the key is
 between the two elements of the pair."""
     def __missing__(self, key):
-if isinstance(key, tuple):
-self[key] = []
-return self[key]
-else:
-try:
-reslist = []
-for pair in self:
-if pair[0] <= key <= pair[1]:
-reslist.extend(self[pair])
-return reslist
+        if isinstance(key, tuple):
+            self[key] = []
+            return self[key]
+        else:
+            try:
+                reslist = []
+                for pair in self:
+                    if pair[0] <= key <= pair[1]:
+                        reslist.extend(self[pair])
+                return reslist
 
-except IndexError:
-raise TypeError("Badly formed dictionary. Keys should be pairs")
-raise KeyError(key)
+        except IndexError:
+            raise TypeError("Badly formed dictionary. Keys should be pairs")
+        raise KeyError(key)
 
 
 def get_pairdata(datafname):
     """ returns a list of pair-wise datapoints:
-each data point is a tuple:
-(framenumbers, x655, y655, x585, y585)
-"""
+    each data point is a tuple:
+    (framenumbers, x655, y655, x585, y585)
+    """
     Data = loadmat(datafname)
     if Data.has_key('pxsize'):
         pxsize = Data['pxsize']
