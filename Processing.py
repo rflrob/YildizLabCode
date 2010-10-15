@@ -29,6 +29,7 @@ import sys, re
 from os import path
 from time import time, sleep, strftime
 import signal
+reload(Analysis)
 
 THRESH = 1500
 DEBUG = False
@@ -157,7 +158,7 @@ if __name__ == '__main__':
 	parser = OptionParser(usage="Usage: %prog -d FILES")
 	parser.set_defaults(multi=True, profile=False, queueing=False, 
 			savefile=strftime('%m%d-map'), start=0, end=None, debug=0,
-			thresh=5000)
+			thresh=5000, bgname=100, dirname='./*/*/*.tif')
 
 	### Input/Output Options ###
 	parser.add_option('-f', '--specification', dest='dirname',

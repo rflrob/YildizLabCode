@@ -4,7 +4,7 @@ import numpy as np, scipy.linalg as la, scipy.interpolate as interp
 def loadmapping(basename):
 	"""docstring for loadmapping"""
 	if os.path.isfile(basename):
-		bothfile = open(basename)
+		bothfile = open(basename, 'rb')
 		filetype = cPickle.load(bothfile)
 		if filetype == "V1-spline":
 			xspline = cPickle.load(bothfile)
@@ -68,7 +68,7 @@ def makeregression(xl, yl, xr, yr, order=2, savefile = None):
 		print savefile
 		savefile = '%s_%d' % (savefile, order)
 		print "Opening the file '%s'" % savefile
-		outfile = open(savefile, 'w')
+		outfile = open(savefile, 'wb')
 		cPickle.dump("V1-reg", outfile)
 		cPickle.dump(order, outfile)
 		cPickle.dump(xcoeffs, outfile)
@@ -134,7 +134,7 @@ def makeLSQspline(xl, yl, xr, yr, n=20, savefile = None, multi = True):
 		#cPickle.dump(yspline, yfile)
 		print n, str(n), type(n)
 		print "Opening just the file %s" % (savefile+"_"+str(n))
-		bothfile = open(savefile + "_" + str(n), 'w')
+		bothfile = open(savefile + "_" + str(n), 'wb')
 		cPickle.dump('V1-spline', bothfile)
 		cPickle.dump(xspline, bothfile)
 		cPickle.dump(yspline, bothfile)

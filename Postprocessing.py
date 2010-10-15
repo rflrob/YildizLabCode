@@ -205,7 +205,7 @@ for frac in opts.fraction:
 			colorbar()
 			title('Average Errors')
 
-			savemat('%s_diffs_step%d_n%d' % (fname, STEPSIZE, n) , 
+			savemat('%s-diffs_step%d_n%d' % (fname, STEPSIZE, n) , 
 					{'diffs' : diffs, 'ns': ns, 'diffmag': diffmag})
 
 

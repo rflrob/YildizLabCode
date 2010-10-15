@@ -16,13 +16,14 @@ from matplotlib.transforms import Affine2D, Affine2DBase, Bbox, \
     BboxTransformTo, IdentityTransform, Transform, TransformWrapper
 import matplotlib.spines as mspines
 
-class PolarAxes(Axes):
+class SemiPolarAxes(Axes):
     """
-    A polar graph projection, where the input dimensions are *theta*, *r*.
+    A polar graph projection, where the input dimensions are *x*, *y*,
+    but the axes are drawn as if a polar plot.
 
     Theta starts pointing east and goes anti-clockwise.
     """
-    name = 'polar'
+    name = 'semipolar'
 
     class PolarTransform(Transform):
         """
@@ -43,7 +44,7 @@ class PolarAxes(Axes):
             y    = xy[:, 1:2]
             x[:] = r * npy.cos(t)
             y[:] = r * npy.sin(t)
-            return xy
+            return tr
         transform.__doc__ = Transform.transform.__doc__
 
         transform_non_affine = transform
@@ -230,7 +231,10 @@ cbook.simple_linear_interpolation on the data before passing to matplotlib.""")
 
         # The complete data transformation stack -- from data all the
         # way to display coordinates
-        self.transData = self.transScale + self.transProjection + \
+        self.transData = self.transScale + IdentityTransform() + \
+                (self.transProjectionAffine + self.transAxes)
+        # old version of the previous line 
+        self.transGrid = self.transScale + self.transProjection + \
             (self.transProjectionAffine + self.transAxes)
 
         # This is the transform for theta-axis ticks.  It is
@@ -255,7 +259,7 @@ cbook.simple_linear_interpolation on the data before passing to matplotlib.""")
         # 2pi.
         self._yaxis_transform = (
             Affine2D().scale(npy.pi * 2.0, 1.0) +
-            self.transData)
+            self.transGrid)
         # The r-axis labels are put at an angle and padded in the r-direction
         self._r_label1_position = Affine2D().translate(22.5, self._rpad)
         self._yaxis_text1_transform = (
@@ -438,7 +442,7 @@ cbook.simple_linear_interpolation on the data before passing to matplotlib.""")
         """
         Return True if this axes support the zoom box
         """
-        return False
+        return True
 
     def start_pan(self, x, y, button):
         angle = self._r_label1_position.to_values()[4] / 180.0 * npy.pi
