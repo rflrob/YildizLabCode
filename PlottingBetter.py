@@ -1,12 +1,21 @@
 from glob import glob
 from os import path
 from matplotlib.pyplot import figure, subplot, hist
+import platform
 
 mol_rad = "0.001"
-dirs = {122: ['F:/Peter/2010-09-12'], 124:['F:/Peter/2010-09-12'],
-        125: ['F:/Peter/2010-09-13'], 592:['F:/Peter/2010-09-13']}
 
-rotations = {122: '-7', 124: '-3', 125: '-4', 592: 'WT'}
+if 'Win' in platform.system():
+    basedir = 'F:/Peter/'
+elif 'Darwin' in platform.system():
+    basedir = '/Volumes/NewVolume/Peter'
+else:
+    basedir = ''
+
+dirs = {122: ['2010-09-12'], 124:['2010-09-12'],
+        125: ['2010-09-13'], 592:['2010-09-13']}
+
+rotations = {122: 'WT', 124: 'WT', 125: 'WT', 592: 'WT'}
 
 plottypes = [592, 125, 122]
 
@@ -16,9 +25,11 @@ path.sep = '/'
 for enumed, dyntype in enumerate(plottypes):
     adx = []; ady = []; ae = []; aaa = [];
     for datadir in dirs[dyntype]:
-        for mtfile in glob(datadir + '/'+ 'Dyn%s*-MTs.txt'%dyntype):
+        for mtfile in glob(path.join(basedir,datadir, 'Dyn%s*-MTs.txt'%dyntype)):
+            mtfile = mtfile.replace('\\', '/')
             
             matfile = glob(mtfile.split('-MTs')[0]+'*.mat')[0]
+            matfile = matfile.replace('\\', '/')
 
             if not path.isfile(matfile):
                 print "*"*70
