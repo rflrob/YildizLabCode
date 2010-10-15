@@ -1,0 +1,10 @@
+The following software was written by Peter Combs (peter.combs@berkeley.edu),
+and is released under the CRAPL v0 beta license.
+
+This package contains a number of utility functions and full-fledged software
+that I wrote to do two-color, super-resolution colocalization.  Full details
+will be provided in a paper tentatively scheduled to be ready for submission in
+Winter/Spring 2011.
+
+Vague instructions on use is available on the Yildiz Lab wiki at
+http://www.ocf.berkeley.edu/~yildiz/wiki/index.php?title=Peter%27s_Lab_Methods
