@@ -15,25 +15,25 @@ def getAllData(element, tagname):
 
 def getFrameSets(tree, colors=1.0):
     types = tree.getElementsByTagName('Type')
-    for type in types:
-        if type.childNodes[0].data == "3" or True:
-            framesets = []
-            framenums = map(int, getAllData(type.parentNode, 'MarkerZ'))
-            framenums.sort()
-            lastframe = -10
-            startframe = -10
-            for frame in framenums:
-                frame = int(math.ceil(frame/colors))
-                if not lastframe <= frame <= lastframe + 2:
-                    # Assume if it's missing one, that's a mistake, otherwise,
-                    # change the above to  ... <= lastframe + 1:
-                    if lastframe > 0:
-                        framesets.append((startframe, lastframe))
-                    startframe = frame
-                lastframe = frame
+    framesets = []
+    #for type in types:
+    #    if type.childNodes[0].data == "3" or True:
+    framenums = map(int, getAllData(tree, 'MarkerZ'))
+    framenums.sort()
+    lastframe = -10
+    startframe = -10
+    for frame in framenums:
+        frame = int(math.ceil(frame/colors))
+        if not lastframe <= frame <= lastframe + 2:
+            # Assume if it's missing one, that's a mistake, otherwise,
+            # change the above to  ... <= lastframe + 1:
             if lastframe > 0:
                 framesets.append((startframe, lastframe))
-            return framesets
+            startframe = frame
+        lastframe = frame
+    if lastframe > 0:
+        framesets.append((startframe, lastframe))
+    return framesets
 
 def getFrameSetNum(framesets, frame):
     for i in xrange(len(framesets)):
@@ -130,36 +130,30 @@ if __name__ == "__main__":
                                 skip = True
                                 break
                         else:
-                            positions[filenum].append((x,y))
+                            positions[filenum].append((xpos,ypos))
+                            markernum = markernums[filenum]
 
-                        if skip:
-                            continue
-
-
-
-                        markernum = markernums[filenum]
-
-                        outfile.write('%s\t%s\t%d\t%d\t%s\t%d\n' %
-                                    (xpos, ypos, framesets[filenum][0], 
-                                     framesets[filenum][1], flag, 
-                                     100*filenum + markernum))
-                        markernums[filenum] += 1
-                        if (opts.xoffset is not False) \
-                                and (opts.yoffset is not False): 
-                            outfile.write('%d\t%d\t%d\t%d\t%s\t%d\n' %
-                                    (xpos + opts.xoffset, ypos + opts.yoffset, 
-                                        framesets[filenum][0], 
-                                        framesets[filenum][1], opts.other, 
-                                        100*filenum + markernum+1))
+                            outfile.write('%s\t%s\t%d\t%d\t%s\t%d\n' %
+                                        (xpos, ypos, framesets[filenum][0], 
+                                         framesets[filenum][1], flag, 
+                                         100*filenum + markernum))
                             markernums[filenum] += 1
-                        elif opts.map is not False:
-                            newx, newy = mapping(xpos, ypos)
-                            outfile.write('%d\t%d\t%d\t%d\t%s\t%d\n' %
-                                    (round(newx), round(newy), 
-                                        framesets[filenum][0],
-                                        framesets[filenum][1], opts.other,
-                                        100*filenum + markernum + 1))
-                            markernums[filenum] += 1
+                            if (opts.xoffset is not False) \
+                                    and (opts.yoffset is not False): 
+                                outfile.write('%d\t%d\t%d\t%d\t%s\t%d\n' %
+                                        (xpos + opts.xoffset, ypos + opts.yoffset, 
+                                            framesets[filenum][0], 
+                                            framesets[filenum][1], opts.other, 
+                                            100*filenum + markernum+1))
+                                markernums[filenum] += 1
+                            elif opts.map is not False:
+                                newx, newy = mapping(xpos, ypos)
+                                outfile.write('%d\t%d\t%d\t%d\t%s\t%d\n' %
+                                        (round(newx), round(newy), 
+                                            framesets[filenum][0],
+                                            framesets[filenum][1], opts.other,
+                                            100*filenum + markernum + 1))
+                                markernums[filenum] += 1
 
 
 
