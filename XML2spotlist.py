@@ -16,7 +16,7 @@ def getAllData(element, tagname):
 def getFrameSets(tree, colors=1.0):
     types = tree.getElementsByTagName('Type')
     for type in types:
-        if type.childNodes[0].data == "3":
+        if type.childNodes[0].data == "3" or True:
             framesets = []
             framenums = map(int, getAllData(type.parentNode, 'MarkerZ'))
             framenums.sort()
@@ -110,6 +110,7 @@ if __name__ == "__main__":
                 types = node.getElementsByTagName('Type')
                 for typenode in types:
                     flag = flagdict[typenode.firstChild.data]
+                    positions = defaultdict(list)
                     if flag == "ERR":
                         continue
                     markernum = 0
@@ -122,6 +123,20 @@ if __name__ == "__main__":
                             int(getElementData(marker, 'MarkerZ')) / opts.color))
                         
                         filenum = getFrameSetNum(framesets, framenum)
+
+                        skip = False
+                        for x,y in positions[filenum]:
+                            if (xpos - x)**2 + (ypos - y)**2 < 5**2:
+                                skip = True
+                                break
+                        else:
+                            positions[filenum].append((x,y))
+
+                        if skip:
+                            continue
+
+
+
                         markernum = markernums[filenum]
 
                         outfile.write('%s\t%s\t%d\t%d\t%s\t%d\n' %
