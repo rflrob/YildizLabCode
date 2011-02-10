@@ -23,12 +23,13 @@ II. Dependencies
 
 This code requires:
 * Python (v2.6 or better --- certain functions use 2.6s exception catching syntax)
-* SciPy (Tested with 0.8.0b1)
-* Matplotlib (Tested with 0.99.3)
+* SciPy (Tested with 0.8.0b1) - http://scipy.org/Download
+* Matplotlib (Tested with 0.99.3) - http://matplotlib.sourceforge.net/
 o pyfits (The important bit happens to be included, and is Copyright (C) 2005
 	Association of Universities for Research in Austronomy (AURA) and covered under
-	a separate license, available at
+	a separate license, available in this repo under AURA-LICENSE or at
 	www.stsci.edu/resources/software_hardware/pyraf/LICENSE)
+    - http://www.stsci.edu/resources/software_hardware/pyfits
 
 The Enthought Python Distribution is especially nice for getting everything you need, 
 and is free for academic use.
