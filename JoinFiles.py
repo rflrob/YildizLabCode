@@ -8,10 +8,10 @@ for fname in sys.argv[1:]:
 	print "Loading %s" % fname
 	D = loadmat(fname, squeeze_me = True, struct_as_record = True)
 	print D.keys()
-	for key in D.keys():#['xl', 'yl', 'xr', 'yr', 'varxl', 'varxr']:
+	for key in D:#['xl', 'yl', 'xr', 'yr', 'varxl', 'varxr']:
 		print "Working up Key: ", key
 		if key[0] == "_": continue
-		if allData.has_key(key):
+		if key in allData:
 			if D[key].ndim == 1:
 				allData[key].extend(list(D[key]))
 			elif D[key].ndim == 2:

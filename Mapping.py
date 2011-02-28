@@ -1,26 +1,26 @@
-import cPickle, os
+import cPickle as pickle, os
 import numpy as np, scipy.linalg as la, scipy.interpolate as interp
 
 def loadmapping(basename):
 	"""docstring for loadmapping"""
 	if os.path.isfile(basename):
 		bothfile = open(basename, 'rb')
-		filetype = cPickle.load(bothfile)
+		filetype = pickle.load(bothfile)
 		if filetype == "V1-spline":
-			xspline = cPickle.load(bothfile)
-			yspline = cPickle.load(bothfile)
+			xspline = pickle.load(bothfile)
+			yspline = pickle.load(bothfile)
 		if filetype == "V1-reg":
-			order = cPickle.load(bothfile)
-			xcoeffs = cPickle.load(bothfile)
-			ycoeffs = cPickle.load(bothfile)
+			order = pickle.load(bothfile)
+			xcoeffs = pickle.load(bothfile)
+			ycoeffs = pickle.load(bothfile)
 			
 			if not (len(xcoeffs) == len(ycoeffs) == (order+1) * (order+2) / 2):
 				raise TypeError('Regression in "%s" is badly formed' % basename)
 	else:
 		xfile = open(basename + '_x')
 		yfile = open(basename + '_y')
-		xspline = cPickle.load(xfile)
-		yspline = cPickle.load(yfile)
+		xspline = pickle.load(xfile)
+		yspline = pickle.load(yfile)
 		filetype = "V0-spline"
 	if "spline" in filetype:
 		def mapping(xr, yr):
@@ -69,10 +69,10 @@ def makeregression(xl, yl, xr, yr, order=2, savefile = None):
 		savefile = '%s_%d' % (savefile, order)
 		print "Opening the file '%s'" % savefile
 		outfile = open(savefile, 'wb')
-		cPickle.dump("V1-reg", outfile)
-		cPickle.dump(order, outfile)
-		cPickle.dump(xcoeffs, outfile)
-		cPickle.dump(ycoeffs, outfile)
+		pickle.dump("V1-reg", outfile)
+		pickle.dump(order, outfile)
+		pickle.dump(xcoeffs, outfile)
+		pickle.dump(ycoeffs, outfile)
 	
 	def mapping(xr, yr):
 		""" A mapping function for taking the right image onto the left, returns x,y"""
@@ -124,7 +124,6 @@ def makeLSQspline(xl, yl, xr, yr, n=20, savefile = None, multi = True):
 		yspline = interp.LSQBivariateSpline(xr, yr, yl, xknots, yknots)
 
 	if savefile:
-		import cPickle
 
 		# Old version of the pickling code.
 		#print "Opening %s and %s" % (savefile + '_%d_x'%n, savefile + '_%d_y'%n)
@@ -135,9 +134,9 @@ def makeLSQspline(xl, yl, xr, yr, n=20, savefile = None, multi = True):
 		print n, str(n), type(n)
 		print "Opening just the file %s" % (savefile+"_"+str(n))
 		bothfile = open(savefile + "_" + str(n), 'wb')
-		cPickle.dump('V1-spline', bothfile)
-		cPickle.dump(xspline, bothfile)
-		cPickle.dump(yspline, bothfile)
+		pickle.dump('V1-spline', bothfile)
+		pickle.dump(xspline, bothfile)
+		pickle.dump(yspline, bothfile)
 
 	def mapping(xr, yr):
 		""" Maps coordinates onto the left channel"""

@@ -15,11 +15,11 @@ reload(Analysis)
 
 def gen_plotter(fnames):
         for fname in fnames:
-                xs, ys, ns = zip(
-                        *(map(float, 
+                xs, ys, ns = list(zip(
+                        *(list(map(float, 
                             (line.split()[0], line.split()[1], 
-                                line.split()[-1])) 
-                    for line in file(fname) if line[0].isdigit()))
+                                line.split()[-1])) )
+                    for line in file(fname) if line[0].isdigit())) )
                 yield (mean(ns), 
                         sqrt(mean(diff(xs)**2 + diff(ys)**2))/sqrt(2))
 
@@ -139,7 +139,7 @@ if __name__ == "__main__":
                                      float(line.split()[1]), 
                                      float(line.split()[-1]),
                                      int(lnum)) 
-                                for line, lnum in zip(file(fname), xrange(1,500)) 
+                                for line, lnum in zip(file(fname), range(1,500)) 
                                   if line[0].isdigit()]).T
             lnums -= 2
             tpmin, tpmax = int(min(lnums)), int(max(lnums))

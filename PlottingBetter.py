@@ -3,6 +3,7 @@ from os import path
 from matplotlib.pyplot import figure, subplot, hist, title, show
 from numpy import arange, pi
 import platform
+from functools import reduce
 
 mol_rad = "0.001"
 plot_as_polar = True

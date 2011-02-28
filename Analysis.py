@@ -188,7 +188,7 @@ def otsu_threshold(image):
 	m = image.min()
 	M = image.max()
 	image = 255 * (image - m)/(M-m) 
-	hgram, edges = histogram(image.flat, bins = range(256))
+	hgram, edges = histogram(image.flat, bins = arange(256))
 	
 	num_b = 0
 	num_a = len(image.flat)

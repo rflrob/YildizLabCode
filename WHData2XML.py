@@ -4,6 +4,7 @@
 from scipy import io
 from optparse import OptionParser
 from os.path import basename
+from functools import reduce
 
 if __name__ == "__main__":
     parser = OptionParser(usage="Usage: %prog inputfile.mat outputfile.xml")

@@ -32,7 +32,7 @@ for c, r, xd, yd in zip(xrg, yrg, diffx, diffy):
         diffys[r,c] += yd
         ns[r,c] += 1
 
-xs, ys = meshgrid(xrange(ceil(xr.max())+2), xrange(ceil(yr.max())+2))
+xs, ys = meshgrid(range(ceil(xr.max())+2), range(ceil(yr.max())+2))
 
 ax = (diffxs/ns).flatten()
 ay = (diffys/ns).flatten()

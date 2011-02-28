@@ -69,7 +69,7 @@ def get_pairdata(datafname):
         where screenx and screeny should be used for finding the nearest axoneme
         """
     Data = loadmat(datafname)
-    if Data.has_key('pxsize'):
+    if 'pxsize' in Data:
         pxsize = Data['pxsize']
     else:
         pxsize = 106.667
@@ -82,9 +82,9 @@ def get_pairdata(datafname):
     screeny = Data['yr']
     framenums = Data['framesetnum']
     
-    # apologies for this ugly map stuff... it's to get the arrays into just plain numbers
-    return map(lambda x: map(lambda y: y[0], x), 
-            zip(framenums, x655, y655, x585, y585, screenx, screeny))
+    # Turn arrays into plain numbers
+    return [[y[0] for y in x] for x 
+            in zip(framenums, x655, y655, x585, y585, screenx, screeny)]
    
 
 import pdb
@@ -94,7 +94,7 @@ def get_axodata(axofname):
     for lnum, usline in enumerate(file(axofname)):
         if not usline[0].isdigit():
             continue
-        line = map(int,usline.split())
+        line = list(map(int,usline.split()))
         if len(line) != 6:
             raise IOError('Badly formed file:\n#%d: %s' % (lnum, usline))
         results[line[0], line[1]].append(((line[2], line[3]), 
@@ -131,7 +131,7 @@ if __name__ == "__main__":
                 nearaxo = axo
         pairs_on_axos[nearaxo].append(pair)
     print "Peter, you idiot!  Didn't find axos for frames:"
-    print set(map(lambda x: x[0], pairs_on_axos[None]))
+    print set([x[0] for x in paris_on_axos[None]])
 
 
     # Find orientation of each pair with respect to the nearest axoneme

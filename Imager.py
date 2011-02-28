@@ -19,7 +19,7 @@ def move_and_image(mmc, e7xx, id, coords, exptime, image_queue, **kwargs):
 
 	DEBUG = False
 	
-	for key in kwargs.keys():
+	for key in kwargs:
 		if key == 'DEBUG': DEBUG = True
 		else: raise TypeError, 'Unknown argument "%s"' % key
 

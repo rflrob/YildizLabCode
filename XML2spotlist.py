@@ -36,7 +36,7 @@ def getFrameSets(tree, colors=1.0):
     return framesets
 
 def getFrameSetNum(framesets, frame):
-    for i in xrange(len(framesets)):
+    for i in range(len(framesets)):
         if framesets[i][0] <= frame <= framesets[i][1]:
             return i
     print "Could not find frame number", frame
