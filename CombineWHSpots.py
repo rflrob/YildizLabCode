@@ -442,6 +442,7 @@ if __name__ == "__main__":
             print "Saving to ", os.path.dirname(fname)+'.mat'
             output_dict = {}
             for var in ('xl', 'yl', 'xr', 'yr', 'varxl', 'varxr', 'newx', 'newy',
+                        'diffx', 'diffy',
                         'framesetnum', 'tpmins', 'tpmaxes', 'imgname', 
                         'DQ_varbig_x','DQ_varbig_y', 'DQ_varbig_t',
                         'DQ_nomatch_x', 'DQ_nomatch_y', 'DQ_nomatch_t',
