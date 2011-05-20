@@ -131,7 +131,7 @@ if __name__ == "__main__":
                 nearaxo = axo
         pairs_on_axos[nearaxo].append(pair)
     print "Peter, you idiot!  Didn't find axos for frames:"
-    print set([x[0] for x in paris_on_axos[None]])
+    print set([x[0] for x in pairs_on_axos[None]])
 
 
     # Find orientation of each pair with respect to the nearest axoneme

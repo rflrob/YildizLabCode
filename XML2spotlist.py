@@ -1,6 +1,5 @@
 from glob import glob
 from optparse import OptionParser
-from re import findall
 from xml.dom import minidom
 from collections import defaultdict
 import os, math
