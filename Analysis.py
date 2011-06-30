@@ -33,8 +33,8 @@ from pylab import figure, colorbar, title, plot, savefig, show, legend, \
 from time import time
 from multiprocessing import Pool
 
-box1_default = (slice(6,245),slice(3,512))
-box2_default = (slice(260, 499), slice(3, 512))
+box1_default = (slice(0,256),slice(0,512))
+box2_default = (slice(256, 512), slice(0, 512))
 
 def main():
 	from scipy.io import loadmat
@@ -251,7 +251,7 @@ def mpt(im_in, thresh = 1.0, im_start=0, im_end = None, **kwargs):
 	smooth = False
 	abs_thresh = False
 	DEBUG = False
-	padding = 3
+	padding = 7
 	
 	for key in kwargs:
 		if key == "smooth": smooth = kwargs[key]
@@ -321,14 +321,18 @@ def mpt(im_in, thresh = 1.0, im_start=0, im_end = None, **kwargs):
 			
 			for j in range(n):
 				row, col = D[j]
+
+                # Make sure fitbox is legal
 				rstart = max(0, row.start - padding)
 				rend = min(shape(im_in)[0]-1, row.stop + padding)
 				cstart = max(0, col.start - padding)
 				cend = min(shape(im_in)[1]-1, col.stop + padding)
 				
+                # Take fitbox and subtract background
 				B = im_in[rstart:rend, cstart:cend, i]
 				B = B - B.min()
 				
+                # Coordinates for fitting
 				dy, dx = mgrid[rstart:rend, cstart:cend]
 								
 				if DEBUG > 2:
@@ -344,6 +348,14 @@ def mpt(im_in, thresh = 1.0, im_start=0, im_end = None, **kwargs):
 					offset[j] = fit[4]
 					amp[j] = fit[5]
 					exits[j] = exit
+
+                    # If fit is too close to the edge of the frame, then ignore it
+                    if not (padding < x2[j] < shape(im_in)[0] - padding) \
+                       or not (padding < y2[j] < shape(im_in)[1] - padding):
+                        x2[j] = float("nan")
+                        y2[j] = float("nan")
+                        exits[j] = -1
+
 					if DEBUG > 1:
 						print "Fitted a point at:", fit
 				except ValueError, err:
